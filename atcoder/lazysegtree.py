@@ -5,13 +5,14 @@ import atcoder._bit
 
 class LazySegTree:
     def __init__(
-            self,
-            op: typing.Callable[[typing.Any, typing.Any], typing.Any],
-            e: typing.Any,
-            mapping: typing.Callable[[typing.Any, typing.Any], typing.Any],
-            composition: typing.Callable[[typing.Any, typing.Any], typing.Any],
-            id_: typing.Any,
-            v: typing.Union[int, typing.List[typing.Any]]) -> None:
+        self,
+        op: typing.Callable[[typing.Any, typing.Any], typing.Any],
+        e: typing.Any,
+        mapping: typing.Callable[[typing.Any, typing.Any], typing.Any],
+        composition: typing.Callable[[typing.Any, typing.Any], typing.Any],
+        id_: typing.Any,
+        v: int | list[typing.Any],
+    ) -> None:
         self._op = op
         self._e = e
         self._mapping = mapping
@@ -81,8 +82,7 @@ class LazySegTree:
     def all_prod(self) -> typing.Any:
         return self._d[1]
 
-    def apply(self, left: int, right: typing.Optional[int] = None,
-              f: typing.Optional[typing.Any] = None) -> None:
+    def apply(self, left: int, right: int | None = None, f: typing.Any | None = None) -> None:
         assert f is not None
 
         if right is None:
@@ -129,8 +129,7 @@ class LazySegTree:
                 if ((right >> i) << i) != right:
                     self._update((right - 1) >> i)
 
-    def max_right(
-            self, left: int, g: typing.Callable[[typing.Any], bool]) -> int:
+    def max_right(self, left: int, g: typing.Callable[[typing.Any], bool]) -> int:
         assert 0 <= left <= self._n
         assert g(self._e)
 

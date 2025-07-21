@@ -4,10 +4,12 @@ import atcoder._bit
 
 
 class SegTree:
-    def __init__(self,
-                 op: typing.Callable[[typing.Any, typing.Any], typing.Any],
-                 e: typing.Any,
-                 v: typing.Union[int, typing.List[typing.Any]]) -> None:
+    def __init__(
+        self,
+        op: typing.Callable[[typing.Any, typing.Any], typing.Any],
+        e: typing.Any,
+        v: int | list[typing.Any],
+    ) -> None:
         self._op = op
         self._e = e
 
@@ -59,8 +61,7 @@ class SegTree:
     def all_prod(self) -> typing.Any:
         return self._d[1]
 
-    def max_right(self, left: int,
-                  f: typing.Callable[[typing.Any], bool]) -> int:
+    def max_right(self, left: int, f: typing.Callable[[typing.Any], bool]) -> int:
         assert 0 <= left <= self._n
         assert f(self._e)
 
@@ -87,8 +88,7 @@ class SegTree:
 
         return self._n
 
-    def min_left(self, right: int,
-                 f: typing.Callable[[typing.Any], bool]) -> int:
+    def min_left(self, right: int, f: typing.Callable[[typing.Any], bool]) -> int:
         assert 0 <= right <= self._n
         assert f(self._e)
 

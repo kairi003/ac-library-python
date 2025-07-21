@@ -1,13 +1,11 @@
 from itertools import combinations
+
 import pytest
-import random
-from typing import List, Tuple
 
 from atcoder.dsu import DSU
 
 
 class TestDsu:
-
     def test_initial_status(self) -> None:
         dsu = DSU(5)
 

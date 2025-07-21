@@ -1,12 +1,9 @@
-import typing
-
-
 def _is_prime(n: int) -> bool:
-    '''
+    """
     Reference:
     M. Forisek and J. Jancina,
     Fast Primality Testing for Integers That Fit into a Machine Word
-    '''
+    """
 
     if n <= 1:
         return False
@@ -30,7 +27,7 @@ def _is_prime(n: int) -> bool:
     return True
 
 
-def _inv_gcd(a: int, b: int) -> typing.Tuple[int, int]:
+def _inv_gcd(a: int, b: int) -> tuple[int, int]:
     a %= b
     if a == 0:
         return (b, 0)

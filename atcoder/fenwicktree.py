@@ -2,7 +2,7 @@ import typing
 
 
 class FenwickTree:
-    '''Reference: https://en.wikipedia.org/wiki/Fenwick_tree'''
+    """Reference: https://en.wikipedia.org/wiki/Fenwick_tree"""
 
     def __init__(self, n: int = 0) -> None:
         self._n = n

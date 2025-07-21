@@ -1,5 +1,3 @@
-import typing
-
 import atcoder._scc
 
 
@@ -13,5 +11,5 @@ class SCCGraph:
         assert 0 <= to_vertex < n
         self._internal.add_edge(from_vertex, to_vertex)
 
-    def scc(self) -> typing.List[typing.List[int]]:
+    def scc(self) -> list[list[int]]:
         return self._internal.scc()

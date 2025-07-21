@@ -1,14 +1,11 @@
-import typing
-
 import atcoder._bit
 import atcoder._math
 from atcoder.modint import ModContext, Modint
 
-
 _sum_e = {}  # _sum_e[i] = ies[0] * ... * ies[i - 1] * es[i]
 
 
-def _butterfly(a: typing.List[Modint]) -> None:
+def _butterfly(a: list[Modint]) -> None:
     g = atcoder._math._primitive_root(a[0].mod())
     n = len(a)
     h = atcoder._bit._ceil_pow2(n)
@@ -51,7 +48,7 @@ def _butterfly(a: typing.List[Modint]) -> None:
 _sum_ie = {}  # _sum_ie[i] = es[0] * ... * es[i - 1] * ies[i]
 
 
-def _butterfly_inv(a: typing.List[Modint]) -> None:
+def _butterfly_inv(a: list[Modint]) -> None:
     g = atcoder._math._primitive_root(a[0].mod())
     n = len(a)
     h = atcoder._bit._ceil_pow2(n)
@@ -87,13 +84,11 @@ def _butterfly_inv(a: typing.List[Modint]) -> None:
                 left = a[i + offset]
                 right = a[i + offset + p]
                 a[i + offset] = left + right
-                a[i + offset + p] = Modint(
-                    (a[0].mod() + left.val() - right.val()) * inow.val())
+                a[i + offset + p] = Modint((a[0].mod() + left.val() - right.val()) * inow.val())
             inow *= sum_ie[atcoder._bit._bsf(~s)]
 
 
-def convolution_mod(a: typing.List[Modint],
-                    b: typing.List[Modint]) -> typing.List[Modint]:
+def convolution_mod(a: list[Modint], b: list[Modint]) -> list[Modint]:
     n = len(a)
     m = len(b)
 
@@ -123,7 +118,7 @@ def convolution_mod(a: typing.List[Modint],
     for i in range(z):
         a[i] *= b[i]
     _butterfly_inv(a)
-    a = a[:n + m - 1]
+    a = a[: n + m - 1]
 
     iz = Modint(z).inv()
     for i in range(n + m - 1):
@@ -132,8 +127,7 @@ def convolution_mod(a: typing.List[Modint],
     return a
 
 
-def convolution(mod: int, a: typing.List[typing.Any],
-                b: typing.List[typing.Any]) -> typing.List[typing.Any]:
+def convolution(mod: int, a: list[int], b: list[int]) -> list[int]:
     n = len(a)
     m = len(b)
 
@@ -144,11 +138,10 @@ def convolution(mod: int, a: typing.List[typing.Any],
         a2 = list(map(Modint, a))
         b2 = list(map(Modint, b))
 
-        return list(map(lambda c: c.val(), convolution_mod(a2, b2)))
+        return [c.val() for c in convolution_mod(a2, b2)]
 
 
-def convolution_int(
-        a: typing.List[int], b: typing.List[int]) -> typing.List[int]:
+def convolution_int(a: list[int], b: list[int]) -> list[int]:
     n = len(a)
     m = len(b)
 

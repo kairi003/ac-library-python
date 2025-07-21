@@ -1,10 +1,8 @@
 import sys
-import typing
 
 
 class CSR:
-    def __init__(
-            self, n: int, edges: typing.List[typing.Tuple[int, int]]) -> None:
+    def __init__(self, n: int, edges: list[tuple[int, int]]) -> None:
         self.start = [0] * (n + 1)
         self.elist = [0] * len(edges)
 
@@ -21,15 +19,15 @@ class CSR:
 
 
 class SCCGraph:
-    '''
+    """
     Reference:
     R. Tarjan,
     Depth-First Search and Linear Graph Algorithms
-    '''
+    """
 
     def __init__(self, n: int) -> None:
         self._n = n
-        self._edges: typing.List[typing.Tuple[int, int]] = []
+        self._edges: list[tuple[int, int]] = []
 
     def num_vertices(self) -> int:
         return self._n
@@ -37,7 +35,7 @@ class SCCGraph:
     def add_edge(self, from_vertex: int, to_vertex: int) -> None:
         self._edges.append((from_vertex, to_vertex))
 
-    def scc_ids(self) -> typing.Tuple[int, typing.List[int]]:
+    def scc_ids(self) -> tuple[int, list[int]]:
         g = CSR(self._n, self._edges)
         now_ord = 0
         group_num = 0
@@ -87,13 +85,13 @@ class SCCGraph:
 
         return group_num, ids
 
-    def scc(self) -> typing.List[typing.List[int]]:
+    def scc(self) -> list[list[int]]:
         ids = self.scc_ids()
         group_num = ids[0]
         counts = [0] * group_num
         for x in ids[1]:
             counts[x] += 1
-        groups: typing.List[typing.List[int]] = [[] for _ in range(group_num)]
+        groups: list[list[int]] = [[] for _ in range(group_num)]
         for i in range(self._n):
             groups[ids[1][i]].append(i)
 
