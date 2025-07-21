@@ -132,10 +132,7 @@ class TestMath:
             inv_mod(a, b)
 
     @pytest.mark.parametrize(
-        (
-            "r",
-            "m",
-        ),
+        ("r", "m"),
         [
             ([], [1, 2]),
             ([1, 2], []),
