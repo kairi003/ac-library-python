@@ -55,6 +55,7 @@ select = [
 ]
 ignore = [
     "B023", # function-uses-loop-variable (B023)
+    "E741", # ambiguous-variable-type (E741)
 ]
 
 [tool.ruff.format]
