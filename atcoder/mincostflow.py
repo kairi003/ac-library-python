@@ -1,5 +1,5 @@
-from typing import NamedTuple, Optional, List, Tuple, cast
-from heapq import heappush, heappop
+from heapq import heappop, heappush
+from typing import NamedTuple, cast
 
 
 class MCFGraph:
@@ -15,12 +15,12 @@ class MCFGraph:
             self.dst = dst
             self.cap = cap
             self.cost = cost
-            self.rev: Optional[MCFGraph._Edge] = None
+            self.rev: MCFGraph._Edge | None = None
 
     def __init__(self, n: int) -> None:
         self._n = n
-        self._g: List[List[MCFGraph._Edge]] = [[] for _ in range(n)]
-        self._edges: List[MCFGraph._Edge] = []
+        self._g: list[list[MCFGraph._Edge]] = [[] for _ in range(n)]
+        self._edges: list[MCFGraph._Edge] = []
 
     def add_edge(self, src: int, dst: int, cap: int, cost: int) -> int:
         assert 0 <= src < self._n
@@ -40,23 +40,15 @@ class MCFGraph:
         assert 0 <= i < len(self._edges)
         e = self._edges[i]
         re = cast(MCFGraph._Edge, e.rev)
-        return MCFGraph.Edge(
-            re.dst,
-            e.dst,
-            e.cap + re.cap,
-            re.cap,
-            e.cost
-        )
+        return MCFGraph.Edge(re.dst, e.dst, e.cap + re.cap, re.cap, e.cost)
 
-    def edges(self) -> List[Edge]:
+    def edges(self) -> list[Edge]:
         return [self.get_edge(i) for i in range(len(self._edges))]
 
-    def flow(self, s: int, t: int,
-             flow_limit: Optional[int] = None) -> Tuple[int, int]:
+    def flow(self, s: int, t: int, flow_limit: int | None = None) -> tuple[int, int]:
         return self.slope(s, t, flow_limit)[-1]
 
-    def slope(self, s: int, t: int,
-              flow_limit: Optional[int] = None) -> List[Tuple[int, int]]:
+    def slope(self, s: int, t: int, flow_limit: int | None = None) -> list[tuple[int, int]]:
         assert 0 <= s < self._n
         assert 0 <= t < self._n
         assert s != t
@@ -64,12 +56,12 @@ class MCFGraph:
             flow_limit = cast(int, sum(e.cap for e in self._g[s]))
 
         dual = [0] * self._n
-        prev: List[Optional[Tuple[int, MCFGraph._Edge]]] = [None] * self._n
+        prev: list[tuple[int, MCFGraph._Edge] | None] = [None] * self._n
 
         def refine_dual() -> bool:
             pq = [(0, s)]
             visited = [False] * self._n
-            dist: List[Optional[int]] = [None] * self._n
+            dist: list[int | None] = [None] * self._n
             dist[s] = 0
             while pq:
                 dist_v, v = heappop(pq)
@@ -100,7 +92,7 @@ class MCFGraph:
 
         flow = 0
         cost = 0
-        prev_cost_per_flow: Optional[int] = None
+        prev_cost_per_flow: int | None = None
         result = [(flow, cost)]
         while flow < flow_limit:
             if not refine_dual():
@@ -108,12 +100,12 @@ class MCFGraph:
             f = flow_limit - flow
             v = t
             while prev[v] is not None:
-                u, e = cast(Tuple[int, MCFGraph._Edge], prev[v])
+                u, e = cast(tuple[int, MCFGraph._Edge], prev[v])
                 f = min(f, e.cap)
                 v = u
             v = t
             while prev[v] is not None:
-                u, e = cast(Tuple[int, MCFGraph._Edge], prev[v])
+                u, e = cast(tuple[int, MCFGraph._Edge], prev[v])
                 e.cap -= f
                 assert e.rev is not None
                 e.rev.cap += f

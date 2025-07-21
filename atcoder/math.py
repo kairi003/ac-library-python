@@ -1,6 +1,5 @@
-import typing
-
 import atcoder._math
+
 
 def pow_mod(x: int, n: int, m: int) -> int:
     return pow(x, n, m)
@@ -16,13 +15,13 @@ def inv_mod(x: int, m: int) -> int:
     return z[1]
 
 
-def crt(r: typing.List[int], m: typing.List[int]) -> typing.Tuple[int, int]:
+def crt(r: list[int], m: list[int]) -> tuple[int, int]:
     assert len(r) == len(m)
 
     # Contracts: 0 <= r0 < m0
     r0 = 0
     m0 = 1
-    for r1, m1 in zip(r, m):
+    for r1, m1 in zip(r, m, strict=False):
         assert 1 <= m1
         r1 %= m1
         if m0 < m1:
@@ -35,14 +34,14 @@ def crt(r: typing.List[int], m: typing.List[int]) -> typing.Tuple[int, int]:
 
         # assume: m0 > m1, lcm(m0, m1) >= 2 * max(m0, m1)
 
-        '''
+        """
         (r0, m0), (r1, m1) -> (r2, m2 = lcm(m0, m1));
         r2 % m0 = r0
         r2 % m1 = r1
         -> (r0 + x*m0) % m1 = r1
         -> x*u0*g % (u1*g) = (r1 - r0) (u0*g = m0, u1*g = m1)
         -> x = (r1 - r0) / g * inv(u0) (mod u1)
-        '''
+        """
 
         # im = inv(u0) (mod u1) (0 <= im < u1)
         g, im = atcoder._math._inv_gcd(m0, m1)
@@ -55,12 +54,12 @@ def crt(r: typing.List[int], m: typing.List[int]) -> typing.Tuple[int, int]:
         # u1 * u1 <= m1 * m1 / g / g <= m0 * m1 / g = lcm(m0, m1)
         x = (r1 - r0) // g % u1 * im % u1
 
-        '''
+        """
         |r0| + |m0 * x|
         < m0 + m0 * (u1 - 1)
         = m0 + m0 * m1 / g - m0
         = lcm(m0, m1)
-        '''
+        """
 
         r0 += x * m0
         m0 *= u1  # -> lcm(m0, m1)

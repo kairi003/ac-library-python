@@ -1,25 +1,26 @@
 import functools
-import typing
 
 
-def _sa_naive(s: typing.List[int]) -> typing.List[int]:
+def _sa_naive(s: list[int]) -> list[int]:
     sa = list(range(len(s)))
     return sorted(sa, key=lambda i: s[i:])
 
 
-def _sa_doubling(s: typing.List[int]) -> typing.List[int]:
+def _sa_doubling(s: list[int]) -> list[int]:
     n = len(s)
     sa = list(range(n))
     rnk = s.copy()
     tmp = [0] * n
     k = 1
     while k < n:
+
         def cmp(x: int, y: int) -> int:
             if rnk[x] != rnk[y]:
                 return rnk[x] - rnk[y]
             rx = rnk[x + k] if x + k < n else -1
             ry = rnk[y + k] if y + k < n else -1
             return rx - ry
+
         sa.sort(key=functools.cmp_to_key(cmp))
         tmp[sa[0]] = 0
         for i in range(1, n):
@@ -29,7 +30,7 @@ def _sa_doubling(s: typing.List[int]) -> typing.List[int]:
     return sa
 
 
-def _sa_is(s: typing.List[int], upper: int) -> typing.List[int]:
+def _sa_is(s: list[int], upper: int) -> list[int]:
     threshold_naive = 10
     threshold_doubling = 40
 
@@ -70,7 +71,7 @@ def _sa_is(s: typing.List[int], upper: int) -> typing.List[int]:
         if i < upper:
             sum_l[i + 1] += sum_s[i]
 
-    def induce(lms: typing.List[int]) -> None:
+    def induce(lms: list[int]) -> None:
         nonlocal sa
         sa = [-1] * n
 
@@ -155,14 +156,13 @@ def _sa_is(s: typing.List[int], upper: int) -> typing.List[int]:
     return sa
 
 
-def suffix_array(s: typing.Union[str, typing.List[int]],
-                 upper: typing.Optional[int] = None) -> typing.List[int]:
-    '''
+def suffix_array(s: str | list[int], upper: int | None = None) -> list[int]:
+    """
     SA-IS, linear-time suffix array construction
     Reference:
     G. Nong, S. Zhang, and W. H. Chan,
     Two Efficient Algorithms for Linear Time Suffix Array Construction
-    '''
+    """
 
     if isinstance(s, str):
         return _sa_is([ord(c) for c in s], 255)
@@ -171,7 +171,7 @@ def suffix_array(s: typing.Union[str, typing.List[int]],
         idx = list(range(n))
 
         def cmp(left: int, right: int) -> int:
-            return typing.cast(int, s[left]) - typing.cast(int, s[right])
+            return s[left] - s[right]
 
         idx.sort(key=functools.cmp_to_key(cmp))
         s2 = [0] * n
@@ -189,15 +189,14 @@ def suffix_array(s: typing.Union[str, typing.List[int]],
         return _sa_is(s, upper)
 
 
-def lcp_array(s: typing.Union[str, typing.List[int]],
-              sa: typing.List[int]) -> typing.List[int]:
-    '''
+def lcp_array(s: str | list[int], sa: list[int]) -> list[int]:
+    """
     Longest-Common-Prefix computation
     Reference:
     T. Kasai, G. Lee, H. Arimura, S. Arikawa, and K. Park,
     Linear-Time Longest-Common-Prefix Computation in Suffix Arrays and Its
     Applications
-    '''
+    """
 
     if isinstance(s, str):
         s = [ord(c) for c in s]
@@ -226,14 +225,14 @@ def lcp_array(s: typing.Union[str, typing.List[int]],
     return lcp
 
 
-def z_algorithm(s: typing.Union[str, typing.List[int]]) -> typing.List[int]:
-    '''
+def z_algorithm(s: str | list[int]) -> list[int]:
+    """
     Z algorithm
     Reference:
     D. Gusfield,
     Algorithms on Strings, Trees, and Sequences: Computer Science and
     Computational Biology
-    '''
+    """
 
     if isinstance(s, str):
         s = [ord(c) for c in s]
